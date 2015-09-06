@@ -4,7 +4,7 @@ Tags: akismet, ecard, electronic card, flash card, greeting card, paypal, postca
 License: GPLv3
 Requires at least: 4.0
 Tested up to: 4.3
-Stable tag: 3.0.4
+Stable tag: 3.1
 
 == Description ==
 eCards is a WordPress plugin used to send electronic cards to friends. It can be implemented in a page, a post or the sidebar.
@@ -32,6 +32,13 @@ There are two ways you can use this plugin:
 5. eCards Dashboard/Help/Usage
 
 == Changelog ==
+
+= 3.1 =
+* FIX: Fixed include() syntax
+* FIX: Removed unused global variable
+* FIX: Renamed main plugin file for WordPress actions compatibility
+* IMPROVEMENT: Reduced number of requests by moving function calls to plugins_loaded
+* IMPROVEMENT: Removed unused options deletion
 
 = 3.0.4 =
 * FEATURE: Updated WordPress compatibility

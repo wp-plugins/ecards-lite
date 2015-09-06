@@ -58,8 +58,8 @@ function ecard_options_page() {
 	}
 	?>
 	<style>
-	.ecards-lite-icon { background-color: #F39C12; color: #ffffff; padding: 2px 4px; font-size: 11px; text-transform: uppercase; border-radius: 3px; font-weight: 700; }
-	.ecards-pro-icon { background-color: #9B59B6; color: #ffffff; padding: 2px 4px; font-size: 11px; text-transform: uppercase; border-radius: 3px; font-weight: 700; }
+	.ecards-lite-icon { background-color: #F39C12; color: #ffffff; padding: 2px 4px; font-size: 11px; text-transform: uppercase; border-radius: 3px; font-weight: 400; border-left: 4px solid rgba(0, 0, 0, 0.25); }
+	.ecards-pro-icon { background-color: #9B59B6; color: #ffffff; padding: 2px 4px; font-size: 11px; text-transform: uppercase; border-radius: 3px; font-weight: 400; border-left: 4px solid rgba(0, 0, 0, 0.25); }
 	.ecards-pro-label { opacity: 0.75; cursor: not-allowed !important; }
 	</style>
 	<div class="wrap">

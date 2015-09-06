@@ -5,7 +5,7 @@ Plugin URI: https://getbutterfly.com/wordpress-plugins/wordpress-ecards-plugin/
 Description: eCards is a plugin used to send electronic cards to friends. It can be implemented in a page, a post or the sidebar. eCards makes it quick and easy for you to send an eCard in 3 easy steps. Just choose your favorite eCard, add your personal message, and send it to any email address. Use preset images, upload your own or select from your Dropbox folder.
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com/
-Version: 3.0.4
+Version: 3.1
 
 eCards Lite
 Copyright (C) 2011, 2012, 2013, 2014, 2015 Ciprian Popescu (getbutterfly@gmail.com)
@@ -27,12 +27,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //
 define('ECARDS_PLUGIN_URL', WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__)));
 define('ECARDS_PLUGIN_PATH', WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)));
-define('ECARDS_VERSION', '3.0.4');
-//
+define('ECARDS_VERSION', '3.1');
 
-// plugin localization
-$plugin_dir = basename(dirname(__FILE__)); 
-load_plugin_textdomain('ecards', false, $plugin_dir . '/languages');
+// plugin initialization
+function ecards_init() {
+	load_plugin_textdomain('ecards', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+}
+add_action('plugins_loaded', 'ecards_init');
+
+// apply content shortcode fix
+if(get_option('ecard_shortcode_fix') === 'on')
+    add_filter('the_content', 'do_shortcode');
+
+include ECARDS_PLUGIN_PATH . '/includes/functions.php';
+include ECARDS_PLUGIN_PATH . '/includes/page-options.php';
 
 function eCardsInstall() {
 	global $wpdb;
@@ -84,45 +92,10 @@ function eCardsInstall() {
 
 	//
 	add_role('ecards_sender', __('eCards Sender', 'ecards'), array('read' =>  false, 'edit_posts' => false, 'delete_posts' => false));
-
-    // clean up, please // 2.4
-    delete_option('ecard_cta');
-    delete_option('ecard_body_intro');
-
-    delete_option('ecard_mail_from_name');
-    delete_option('ecard_mail_from_email');
-
-    delete_option('ecard_body_footer');
-    delete_option('ecard_user_upload');
-    delete_option('ecard_stats_days');
-
-    delete_option('ecard_thumbnail_width');
-    delete_option('ecard_thumbnail_height');
-    delete_option('ecard_remove_filters');
-
-    delete_option('ecard_email_validation');
-
-	// reCAPTCHA settings // 2.9
-    delete_option('ecard_captcha_display');
-    delete_option('ecard_rc_public');
-    delete_option('ecard_rc_private');
-    delete_option('ecard_rc_theme');
-    delete_option('ecard_rc_type');
-
-	//
-	remove_role('ecards_recipient');
 }
 
 register_activation_hook(__FILE__, 'eCardsInstall');
 //
-
-// apply content shortcode fix
-if(get_option('ecard_shortcode_fix') === 'on')
-    add_filter('the_content', 'do_shortcode');
-
-include(ECARDS_PLUGIN_PATH . '/includes/functions.php');
-include(ECARDS_PLUGIN_PATH . '/includes/page-options.php');
-
 
 
 function display_ecardMe() {
