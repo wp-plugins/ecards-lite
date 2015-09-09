@@ -5,7 +5,7 @@ Plugin URI: https://getbutterfly.com/wordpress-plugins/wordpress-ecards-plugin/
 Description: eCards is a plugin used to send electronic cards to friends. It can be implemented in a page, a post or the sidebar. eCards makes it quick and easy for you to send an eCard in 3 easy steps. Just choose your favorite eCard, add your personal message, and send it to any email address. Use preset images, upload your own or select from your Dropbox folder.
 Author: Ciprian Popescu
 Author URI: https://getbutterfly.com/
-Version: 3.1
+Version: 3.2
 
 eCards Lite
 Copyright (C) 2011, 2012, 2013, 2014, 2015 Ciprian Popescu (getbutterfly@gmail.com)
@@ -27,11 +27,16 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 //
 define('ECARDS_PLUGIN_URL', WP_PLUGIN_URL . '/' . dirname(plugin_basename(__FILE__)));
 define('ECARDS_PLUGIN_PATH', WP_PLUGIN_DIR . '/' . dirname(plugin_basename(__FILE__)));
-define('ECARDS_VERSION', '3.1');
+define('ECARDS_VERSION', '3.2');
 
 // plugin initialization
 function ecards_init() {
 	load_plugin_textdomain('ecards', false, dirname(plugin_basename(__FILE__)) . '/languages/');
+
+    $ecard_noreply = get_option('ecard_noreply');
+    if(empty($ecard_noreply)) {
+        echo '<div id="message" class="error notice is-dismissible"><p>' . __('You have not set a dedicated email address for eCards! <a href="' . admin_url('options-general.php?page=ecards&tab=ecards_email') . '">Click here</a> to set it.', 'ecards') . '</p></div>';
+    }
 }
 add_action('plugins_loaded', 'ecards_init');
 
@@ -69,6 +74,8 @@ function eCardsInstall() {
     add_option('ecard_counter', 0);
     add_option('ecard_behaviour', 1);
     add_option('ecard_link_anchor', 'Click to see your eCard!');
+
+    add_option('ecard_noreply', '');
 
     // email settings
     add_option('ecard_title', 'eCard!');
@@ -187,9 +194,11 @@ function display_ecardMe() {
 
 		$attachments = '';
 
-        $headers = '';
-		$headers[] = "Content-Type: text/html;";
-		$headers[] = "From: $ecard_from <$ecard_email_from>;";
+        $ecard_noreply = get_option('ecard_noreply');
+
+        $headers[] = "Content-Type: text/html;";
+		$headers[] = 'From: ' . $ecard_from . ' <' . $ecard_noreply . '>';
+		$headers[] = "Reply-To: '$ecard_from' <$ecard_email_from>;";
 
 		// Akismet
 		$content['comment_author'] = $ecard_from;

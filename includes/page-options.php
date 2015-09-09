@@ -22,6 +22,7 @@ function ecard_options_page() {
         echo '<div id="message" class="updated notice is-dismissible"><p>' . __('Options updated successfully!', 'ecards') . '</p></div>';
 	}
 	if(isset($_POST['info_email_update'])) {
+		update_option('ecard_noreply', sanitize_email($_POST['ecard_noreply']));
 		update_option('ecard_behaviour', sanitize_text_field($_POST['ecard_behaviour']));
 		update_option('ecard_link_anchor', sanitize_text_field($_POST['ecard_link_anchor']));
 
@@ -82,7 +83,7 @@ function ecard_options_page() {
             <div class="postbox">
                 <h3><div class="dashicons dashicons-welcome-view-site"></div> <strong>eCards Updates</strong></h3>
                 <div class="inside">
-                    <p>The eCards theme features enhanced integration, dedicated homepage, in-place sliders and more! You need eCards plugin <b>3.0</b> or higher in order to use the official theme. Make sure you select the official theme style from <b>eCards Settings</b> &ndash; <b>Styles</b>.</p>
+                    <p>The eCards theme features enhanced integration, dedicated homepage, in-place sliders and more! You need eCards plugin <b>3.0</b> or higher in order to use the official theme. Make sure you select the official theme style from <b>eCards Settings</b> &ndash; <b>eCards style</b>.</p>
                     <a href="//codecanyon.net/item/wordpress-ecards/1051966" rel="external" class="button button-primary button-hero">Get <span class="ecards-pro-icon">PRO</span> version!</a>
                     <a href="//getbutterfly.com/marketplace/ecards-theme-wordpress/" rel="external" class="button button-secondary button-hero">Get eCards theme!</a>
                 </div>
@@ -298,7 +299,23 @@ function ecard_options_page() {
     		<form method="post" action="">
     			<h3 class="title"><?php _e('Email Settings', 'ecards'); ?></h3>
                 <p><b>Note:</b> To avoid your email adress being marked as spam, it is highly recommended that your "from" domain match your website. Some hosts may require that your "from" address be a legitimate address. Use a plugin to set custom <b>From Name</b> and <b>From Email</b> headers. We recommend <a href="https://wordpress.org/plugins/wp-mailfrom-ii/">WP Mail From II</a>.</p>
-    		    <table class="form-table">
+                <div class="postbox">
+                    <div class="inside">
+                        <table class="form-table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"><label for="ecard_noreply">Dedicated email address</label></th>
+                                    <td>
+                                        <input name="ecard_noreply" id="ecard_noreply" type="email" class="regular-text" value="<?php echo get_option('ecard_noreply'); ?>">
+                                        <br><small>Create a dedicated email address to use for sending eCards and prevent your messages landing in Spam/Junk folders.<br>Use <code>noreply@yourdomain.com</code>, <code>ecards@yourdomain.com</code> or something similar.</small>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <table class="form-table">
     		        <tbody>
     		            <tr>
     		                <th scope="row"><label for="ecard_behaviour">Email behaviour</label></th>
