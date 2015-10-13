@@ -1,6 +1,6 @@
 <?php
 function ecard_options_page() {
-	global $ecard_version;
+    global $ecard_version;
 
 	$ecard_counter = get_option('ecard_counter');
 
